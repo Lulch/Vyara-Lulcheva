@@ -1,0 +1,92 @@
+package MatrixExam;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class RallyRacing {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+
+        String carN = scanner.nextLine();
+        String [][] mat = new String[rows][cols];
+
+
+        fillM(scanner, rows, mat);
+
+        int rowC = 0;
+        int colC = 0;
+        List<Integer> tunelCoordinates = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if(  mat[row][col].equals("T")){
+                    tunelCoordinates.add(row);
+                    tunelCoordinates.add(col);
+                }
+            }
+        }
+
+        int km = 0;
+
+        String direction = scanner.nextLine();
+        while(!direction.equals("End")){
+            switch (direction){
+                case "up":
+                    rowC--;
+                    break;
+                case "down":
+                    rowC++;
+                    break;
+                case "left":
+                    colC--;
+                    break;
+                case "right":
+                    colC++;
+                    break;
+            }
+
+            //new position check
+            if(mat[rowC][colC].equals("T")){
+            rowC = tunelCoordinates.get(2);
+            colC = tunelCoordinates.get(3);
+            mat[tunelCoordinates.get(0)][tunelCoordinates.get(1)] = ".";
+            mat[tunelCoordinates.get(2)][tunelCoordinates.get(3)] = ".";
+            km += 30;
+            } else if(mat[rowC][colC].equals("F")){
+            km += 10;
+                System.out.printf("Racing car %s finished the stage!%n",carN );
+                System.out.printf("Distance covered %d km.%n", km);
+                mat[rowC][colC] = "C";
+                printM(mat,rows,cols);
+            return;
+
+            }else if(mat[rowC][colC].equals(".")){
+                km+= 10;
+            }
+
+            direction = scanner.nextLine();
+        }
+        mat[rowC][colC] = "C";
+        System.out.printf("Racing car %s DNF.%n", carN);
+        System.out.printf("Distance covered %d km.%n", km);
+        printM(mat,rows,cols);
+    }
+
+    private static void fillM(Scanner scanner, int rows, String[][] mat) {
+        for (int row = 0; row < rows; row++) {
+            mat[row] = scanner.nextLine().split(" ");
+        }
+    }
+
+    private static void printM(String[][] mat, int rows, int cols){
+        for (int row = 0; row < rows ; row++) {
+            for (int col = 0; col < cols; col++) {
+                System.out.print(mat[row][col]);
+            }
+            System.out.println();
+        }
+    }
+}
