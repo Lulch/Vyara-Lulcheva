@@ -1,0 +1,110 @@
+package MatrixExam;
+
+import javax.imageio.ImageTranscoder;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+
+
+public class Snake {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+        int food = 0;
+        int rowSnake = -1;
+        int colSnake = -1;
+        boolean gameOver = false;
+        String [][] mat = new String[rows][cols];
+      List<Integer> list = new ArrayList<>();
+        int countTumels = 0;
+
+        //fillM
+        for (int row = 0; row < rows ; row++) {
+            mat[row] = scanner.nextLine().split("");
+        }
+        //find snake
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols ; col++) {
+                if(mat[row][col].equals("S")){
+                    rowSnake = row;
+                    colSnake = col;
+                    break;
+                }
+            }
+        }
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (mat[row][col].equals("B")) {
+                 list.add(row);
+                 list.add(col);
+                }
+            }
+        }
+        String direction = scanner.nextLine();
+        while (true) {
+            if (direction.equals("up")) {
+                mat[rowSnake][colSnake] = ".";
+                rowSnake--;
+            } else if (direction.equals("down")) {
+                mat[rowSnake][colSnake] = ".";
+                rowSnake++;
+            } else if (direction.equals("left")) {
+                mat[rowSnake][colSnake] = ".";
+                colSnake--;
+            } else if (direction.equals("right")) {
+                mat[rowSnake][colSnake] = ".";
+                colSnake++;
+            }
+
+            if (rowSnake < 0 || colSnake < 0 || rowSnake >= rows || colSnake >= cols) {
+                System.out.println("Game over!");
+                System.out.printf("Food eaten: %d%n", food);
+                printMatrix(rows, cols, mat);
+                return;
+            }
+            //къде стъпваме
+            if (mat[rowSnake][colSnake].equals( "*")) {
+               food++;
+               mat[rowSnake][colSnake] = ".";
+                if (food >= 10) {
+                    mat[rowSnake][colSnake] = "S";
+                    System.out.println("You won! You fed the snake.");
+                    System.out.printf("Food eaten: %d%n", food);
+                    printMatrix(rows, cols, mat);
+                    return;
+                }
+
+            } else if (mat[rowSnake][colSnake].equals("B")) {
+                //findB
+                countTumels++;
+                if (countTumels == 1) {
+               rowSnake = list.get(2);
+                    colSnake = list.get(3);
+                    mat[list.get(0)][list.get(1)] = ".";
+                    mat[list.get(2)][list.get(3)] = ".";
+                }
+
+            } else if (mat[rowSnake][colSnake].equals("-")){
+                mat[rowSnake][colSnake] = ".";
+        }
+            direction = scanner.nextLine();
+           // printMatrix(rows,cols,mat);
+    }
+
+  }
+
+        private static void printMatrix ( int rows, int cols, String [][] mat){
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    System.out.print(mat[row][col]);
+                }
+                System.out.println();
+            }
+        }
+    }
+
