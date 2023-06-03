@@ -1,0 +1,102 @@
+package MatrixExam;
+
+import java.util.Scanner;
+
+public class MouseAndCheese {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+
+        char [][] m = new char[rows][cols];
+
+
+        int mRow = -1;
+        int mCol = -1;
+        int cheese = 0;
+        fillM(scanner, rows, m);
+        for (int row = 0; row < rows ; row++) {
+            for (int col = 0; col < cols ; col++) {
+                if(m[row][col] == 'M'){
+                    mRow = row;
+                    mCol = col;
+                    break;
+                }
+            }
+        }
+
+        String command = scanner.nextLine();
+        while(!command.equals("end")){
+            m[mRow][mCol] = '-';
+        switch (command){
+
+            case "up":
+             //   m[mRow][mCol] = '-';
+                mRow --;
+            break;
+            case "down":
+               // m[mRow][mCol] = '-';
+                    mRow ++;
+
+                break;
+            case "left":
+               // m[mRow][mCol] = '-';
+                    mCol --;
+
+                break;
+            case "right":
+               // m[mRow][mCol] = '-';
+                   mCol ++;
+                break;
+        }
+       //m[mRow][mCol] = 'M';
+
+        if (mRow < 0 || mRow >= rows || mCol <0 || mCol >= cols){
+            System.out.println("Where is the mouse?");
+            if (cheese < 5) {
+                System.out.printf("The mouse couldn't eat the cheeses, she needed %d cheeses more.%n", (5 - cheese));
+            } else {
+                System.out.printf("Great job, the mouse is fed %d cheeses!%n", cheese);
+            }
+            printM(rows, cols, m);
+            return;
+        }
+        if(m[mRow][mCol] == 'c'){
+        cheese ++;
+          //  m[mRow][mCol] = '-';
+
+        } else if(m[mRow][mCol] == 'B') {
+            // m[mRow][mCol] = '-';
+            continue;
+        }
+            m[mRow][mCol] = 'M';
+
+            command = scanner.nextLine();
+        }
+
+        if (cheese < 5) {
+            System.out.printf("The mouse couldn't eat the cheeses, she needed %d cheeses more.%n", (5 - cheese));
+        } else {
+            System.out.printf("Great job, the mouse is fed %d cheeses!%n", cheese);
+        }
+        printM(rows, cols, m);
+
+    }
+
+
+    private static void fillM(Scanner scanner, int rows, char[][] m) {
+        for (int row = 0; row < rows; row++) {
+            m[row] = scanner.nextLine().toCharArray();
+        }
+    }
+
+    private static void printM(int rows, int cols, char[][] m) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                System.out.print(m[row][col]);
+            }
+            System.out.println();
+        }
+    }
+}
