@@ -1,0 +1,243 @@
+package MatrixExam;
+
+import java.awt.*;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+//80/100
+public class Selling {
+    public static <List> void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+        String[][] m = new String[rows][cols];
+
+        int rowPlayer = -1;
+        int colPlayer = -1;
+        int collectedMoney = 0;
+        boolean isOut = false;
+        int priceClient = 0;
+
+        for (int row = 0; row < rows; row++) {
+            m[row] = scanner.nextLine().split("");
+        }
+
+        //find the player
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (m[row][col].equals("S")) {
+                    colPlayer = col;
+                    rowPlayer = row;
+                    break;
+                }
+
+            }
+        }
+        int pillarRow1 = -1;
+        int pillarCol1 = -1;
+        int pillarRow2 = -1;
+        int pillarCol2 = -1;
+        int pillarCount = 0;
+
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (m[row][col].equals("O")) {
+                    pillarCount++;
+                    if (pillarCount == 1) {
+                        pillarCol1 = col;
+                        pillarRow1 = row;
+                    } else {
+                        pillarCol2 = col;
+                        pillarRow2= row;
+                    }
+                }
+            }
+        }
+
+
+        String command = scanner.nextLine();
+
+        while (collectedMoney < 50 && !isOut) {
+            //while(collectedMoney < 50) || isOut){???????
+            m[rowPlayer][colPlayer] = "-";
+            if (command.equals("up")) {
+                if (rowPlayer - 1 >= 0) {
+                    rowPlayer--;
+
+                } else {
+                    isOut = true;
+                    System.out.println("Bad news, you are out of the bakery.");
+                    System.out.printf("Money: %s%n", collectedMoney);
+                    printM(rows, cols, colPlayer, m[rowPlayer]);
+                    return;
+                }
+
+            } else if (command.equals("down")) {
+                if (rowPlayer + 1 < rows) {
+                    rowPlayer++;
+
+                } else {
+                    isOut = true;
+                    System.out.println("Bad news, you are out of the bakery.");
+                    System.out.printf("Money: %s%n", collectedMoney);
+                    printM(rows, cols, colPlayer, m[rowPlayer]);
+                    return;
+                }
+
+            } else if (command.equals("left")) {
+
+                if (colPlayer - 1 >= 0) {
+                    colPlayer--;
+
+                } else {
+                    isOut = true;
+                    System.out.println("Bad news, you are out of the bakery.");
+                    System.out.printf("Money: %s%n", collectedMoney);
+                    printM(rows, cols, colPlayer, m[rowPlayer]);
+                    return;
+                }
+            } else if (command.equals("right")) {
+                if (colPlayer + 1 < cols) {
+                    colPlayer++;
+
+                } else {
+                    isOut = true;
+                    System.out.println("Bad news, you are out of the bakery.");
+                    System.out.printf("Money: %s%n", collectedMoney);
+                    printM(rows, cols, colPlayer, m[rowPlayer]);
+                    return;
+                }
+
+            }
+
+            // where do we go?
+            if (isClient(rowPlayer, m, colPlayer)) {
+
+                if (m[rowPlayer][colPlayer].equals("0")) {
+                    priceClient = Integer.parseInt("0");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("1")) {
+                    priceClient = Integer.parseInt("1");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("2")) {
+                    priceClient = Integer.parseInt("2");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+
+                } else if (m[rowPlayer][colPlayer].equals("3")) {
+                    priceClient = Integer.parseInt("3");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("4")) {
+                    priceClient = Integer.parseInt("4");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("5")) {
+                    priceClient = Integer.parseInt("5");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("6")) {
+                    priceClient = Integer.parseInt("6");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("7")) {
+                    priceClient = Integer.parseInt("7");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("8")) {
+                    priceClient = Integer.parseInt("8");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                } else if (m[rowPlayer][colPlayer].equals("9")) {
+                    priceClient = Integer.parseInt("9");
+                    collectedMoney += priceClient;
+                    m[rowPlayer][colPlayer] = "-";
+
+                }
+
+
+            } else if (m[rowPlayer][colPlayer].equals("O")) {
+                m[rowPlayer][colPlayer] = "-";
+                rowPlayer = pillarRow2;
+                colPlayer = pillarCol2;
+
+            }
+            m[rowPlayer][colPlayer] = "S";
+
+            if (collectedMoney >= 50) {
+                System.out.println("Good news! You succeeded in collecting enough money!");
+                System.out.printf("Money: %s%n", collectedMoney);
+                printM(rows, cols, colPlayer, m[rowPlayer]);
+               return;
+            } else {
+                command = scanner.nextLine();
+            }
+
+
+        }
+
+
+
+
+    }
+
+
+
+    private static void printM(int rows, int cols, int colPlayer, String[] m) {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col  < cols; col ++) {
+                System.out.print(m[colPlayer]);
+            }
+            System.out.println();
+        }
+    }
+
+
+    public static boolean isClient(int rowPlayer, String [][] m, int colPlayer){
+        if(m[rowPlayer][colPlayer].equals("0")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("1")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("2")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("3")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("4")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("5")){
+
+            return true;
+        }else if(m[rowPlayer][colPlayer].equals("6")){
+
+            return true;
+        }else if(m[rowPlayer][colPlayer].equals("7")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("8")){
+
+            return true;
+        } else if(m[rowPlayer][colPlayer].equals("9")){
+
+            return true;
+        }
+        return false;
+    }
+}
