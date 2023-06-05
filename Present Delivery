@@ -1,0 +1,117 @@
+package MatrixExam;
+
+import java.util.Scanner;
+//83/100
+public class PresentDelivery {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int presentsCount = Integer.parseInt(scanner.nextLine());
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+
+        int santaRow = -1;
+        int santaCol = -1;
+        int niceKidsCount = 0;
+
+        String[][] mat = new String[rows][cols];
+//fill mat
+        for (int row = 0; row < rows; row++) {
+            mat[row] = scanner.nextLine().split(" ");
+        }
+//find Santa
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (mat[row][col].equals("S")) {
+                    santaRow = row;
+                    santaCol = col;
+                    break;
+                }
+            }
+        }
+        // find nice kids
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (mat[row][col].equals("V")) {
+                    niceKidsCount++;
+                }
+            }
+        }
+        int kidsCount = niceKidsCount;
+
+
+        String direction = scanner.nextLine();
+        while (!direction.equals("Christmas morning")) {
+
+            switch (direction) {
+                case "up":
+                    mat[santaRow][santaCol] = "-";
+                    santaRow--;
+                    break;
+                case "down":
+                    mat[santaRow][santaCol] = "-";
+                    santaRow++;
+                    break;
+                case "left":
+                    mat[santaRow][santaCol] = "-";
+                    santaCol--;
+                    break;
+                case "right":
+                    mat[santaRow][santaCol] = "-";
+                    santaCol++;
+                    break;
+            }
+            //where does he go?
+            if (mat[santaRow][santaCol].equals("V")) {
+                if (presentsCount <= 0) {
+                    System.out.println("Santa ran out of presents.");
+                } else {
+                    presentsCount--;
+                    mat[santaRow][santaCol] = "-";
+                    kidsCount--;
+                }
+
+
+            } else if (mat[santaRow][santaCol].equals("C")) {
+                if (presentsCount - 4 > 0) {
+                    presentsCount = presentsCount - 4;
+                    if (mat[santaRow - 1][santaCol].equals("V")) {
+                        kidsCount--;
+                        mat[santaRow - 1][santaCol] = "-";
+                    } else if (mat[santaRow + 1][santaCol].equals("V")) {
+                        kidsCount--;
+                        mat[santaRow + 1][santaCol] = "-";
+                    } else if (mat[santaRow][santaCol - 1].equals("V")) {
+                        mat[santaRow][santaCol - 1] = "-";
+                        kidsCount--;
+                    } else if (mat[santaRow][santaCol + 1].equals("V")) {
+                        kidsCount--;
+                        mat[santaRow][santaCol + 1] = "-";
+                    }
+             }
+            }
+            if(presentsCount <= 0){
+                System.out.println("Santa ran out of presents!");
+                break;
+            }
+
+            direction = scanner.nextLine();
+
+           }
+        mat[santaRow][santaCol] = "S";
+        //print mat
+        for (int row = 0; row < rows; row++) {
+            for (int col  = 0; col  < cols; col ++) {
+                System.out.print(mat[row][col]+ " ");
+            }
+            System.out.println();
+        }
+
+        if(kidsCount == 0){
+            System.out.printf("Good job, Santa! %d happy nice kid/s.", niceKidsCount);
+        } else {
+            System.out.printf("No presents for %d nice kid/s.", kidsCount);
+        }
+    }
+}
