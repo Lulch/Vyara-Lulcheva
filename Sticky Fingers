@@ -1,0 +1,129 @@
+package MatrixExam;
+
+import java.util.Scanner;
+
+public class StickyFingers {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+
+        int stolenMoney = 0;
+        int totalStolen = 0;
+
+        String[] directions = scanner.nextLine().split(",");
+
+        char[][] matrix = new char[rows][cols];
+
+        int dRow = -1;
+        int dCol = -1;
+        // fillMatrix(dRow, dCol, matrix,scanner);
+        for (int row = 0; row < rows; row++) {
+            matrix[row] = scanner.nextLine().replaceAll(" ", "").toCharArray();
+
+        }
+
+        //findD(rows, cols, matrix, dRow, dCol);\
+
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (matrix[row][col] == 'D') {
+                    dCol = col;
+                    dRow = row;
+                }
+            }
+        }
+
+        int currentRow = 0;
+        int currentCol = 0;
+        for (String direction : directions) {
+            if (direction.equals("up")) {
+                currentRow = dRow - 1;
+                if ( currentRow < 0 ) {
+                    System.out.println("You cannot leave the town, there is police outside!");
+                  //  printMatrix(rows, cols, matrix);
+                } else {
+                    matrix[dRow][dCol] = '+';
+                    dRow--;
+
+                }
+
+            } else if (direction.equals("down")) {
+                currentRow = dRow +1;
+                if (currentRow >= rows) {
+                    System.out.println("You cannot leave the town, there is police outside!");
+                 //   printMatrix(rows, cols, matrix);
+                } else {
+                    matrix[dRow][dCol] = '+';
+                    dRow++;
+
+                }
+            } else if (direction.equals("left")) {
+                currentCol = dCol - 1;
+                if ( currentCol < 0) {
+                    System.out.println("You cannot leave the town, there is police outside!");
+                  //  printMatrix(rows, cols, matrix);
+                } else {
+                    matrix[dRow][dCol] = '+';
+                    dCol--;
+
+                }
+            } else if (direction.equals("right")) {
+                currentCol = dCol + 1;
+                if ( currentCol >= cols) {
+                    System.out.println("You cannot leave the town, there is police outside!");
+//                    printMatrix(rows, cols, matrix);
+                } else {
+                   matrix[dRow][dCol] = '+';
+                    dCol++;
+
+                }
+            }
+
+                // проверяваме мястото, на което ще отиде
+                if (matrix[dRow][dCol] == '$') {
+                    stolenMoney = dRow * dCol;
+                    totalStolen += stolenMoney;
+                    matrix[dRow][dCol] = 'D';
+                    System.out.printf("You successfully stole %d$.%n",stolenMoney);
+                //    printMatrix(rows, cols, matrix);
+                } else if (matrix[dRow][dCol] == 'P') {
+                    System.out.printf("You got caught with %d$, and you are going to jail.%n", totalStolen);
+                 //   printMatrix(rows, cols, matrix);
+                    matrix[dRow][dCol] = '#';
+                    printMatrix(rows, cols, matrix);
+                    return;
+
+                } else if(matrix[dRow][dCol] == '+'){
+                    matrix[dRow][dCol] = 'D';
+                }
+            }
+        System.out.printf ("Your last theft has finished successfully with %d$ in your pocket.%n", totalStolen);
+        printMatrix(rows, cols, matrix);
+        }
+
+        private static void printMatrix(int rows, int cols, char [][] matrix){
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols -1; col++) {
+                    System.out.print(matrix[row][col] + " ");
+
+                }
+                System.out.print(matrix[row][cols - 1]);
+                System.out.println(); //свали курсора на следващия ред
+            }
+
+        /*    for (int row = 0; row < matrix.length; row++) {
+                for (int col = 0; col < matrix.length; col++) {
+                    System.out.print(matrix[row][col] + " ");
+                    }
+                System.out.println();
+                }*/
+
+            }
+
+
+    }
+
+
