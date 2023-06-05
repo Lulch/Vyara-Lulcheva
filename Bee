@@ -1,0 +1,135 @@
+package MatrixExam;
+
+import java.util.Scanner;
+
+public class Bee {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int rows = Integer.parseInt(scanner.nextLine());
+        int cols = rows;
+        int bRow = -1;
+        int bCol = -1;
+        int flowers = 0;
+        char [][] m = new char[rows][cols];
+
+        //fillM
+        fillM(scanner, rows, m);
+
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col  < cols; col ++) {
+                if(m[row][col] == 'B'){
+                    bCol = col;
+                    bRow = row;
+                    break;
+                }
+            }
+        }
+
+
+        String command = scanner.nextLine();
+        while (!command.equals("End")) {
+            switch (command){
+                case "up":
+                    m[bRow][bCol]= '.';
+                    bRow --;
+                    break;
+                case "down":
+                    m[bRow][bCol]= '.';
+                    bRow ++;
+                    break;
+                case "left":
+                    m[bRow][bCol]= '.';
+                    bCol --;
+                    break;
+                case "right":
+                    m[bRow][bCol]= '.';
+                    bCol++;
+                    break;
+            }
+
+            if(bRow < 0 || bRow >= rows || bCol < 0 || bCol >= cols){
+                System.out.println("The bee got lost!");
+                flowersCheck(flowers);
+                printM(rows, cols, flowers, m);
+                return;
+            }
+            if(m[bRow][bCol]=='f'){
+                flowers++;
+                m[bRow][bCol]= '.';
+               //////
+
+            } else if(m[bRow][bCol]=='O'){
+                m[bRow][bCol]= '.';
+                if(command.equals("up")){
+                    bRow--;
+                    if(m[bRow][bCol]=='f'){
+                        flowers++;
+                        m[bRow][bCol]= '.';
+
+
+                    }
+                }else if(command.equals("down")){
+                    bRow++;
+                    if(m[bRow][bCol]=='f'){
+                        flowers++;
+                        m[bRow][bCol]= '.';
+
+
+                    }
+                }else if(command.equals("right")){
+                    bCol++;
+                    if(m[bRow][bCol]=='f'){
+                        flowers++;
+                        m[bRow][bCol]= '.';
+
+
+                    }
+                } else if(command.equals("left")){
+                    bCol--;
+                    if(m[bRow][bCol]=='f'){
+                        flowers++;
+                        m[bRow][bCol]= '.';
+
+
+                    }
+                }
+                m[bRow][bCol]= '.';
+            }
+            command = scanner.nextLine();
+
+        }
+        m[bRow][bCol]='B';
+        flowersCheck(flowers);
+        printM(rows, cols, flowers, m);
+
+    }
+
+    private static void printM(int rows, int cols, int flowers, char[][] m) {
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col  < cols; col ++) {
+                System.out.print(m[row][col]);
+            }
+            System.out.println();
+        }
+    }
+
+
+    private static void flowersCheck(int flowers) {
+        if(flowers < 5){
+            System.out.printf("The bee couldn't pollinate the flowers, she needed %d flowers more", (5 - flowers));
+            System.out.println();
+        } else {
+            System.out.printf("Great job, the bee manage to pollinate %d flowers!", flowers);
+            System.out.println();
+        }
+    }
+
+    private static void fillM(Scanner scanner, int rows, char[][] m) {
+        for (int row = 0; row < rows; row++) {
+            m[row] = scanner.nextLine().toCharArray();
+        }
+    }
+}
